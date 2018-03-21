@@ -21,12 +21,11 @@ class MemoryViewController: UIViewController {
     }
     
     
-    
     var ourDifficulty = GameAndDifficulty()
     var createBoardValues = AllMemoryCards(difficulty: "")
     var buttonArray = [[UIButton]]()
     var possibleMatch = MatchCoordinates()
-    var time = Time(seconds: 0)
+    var time = Time(seconds: 0 , gameType: "Memory")
     let minutes = UIImageView(frame: CGRect(x:140, y:75, width: 20, height: 30))
     let seconds = UIImageView(frame: CGRect(x:180, y:75, width: 20, height: 30))
     let seconds2 = UIImageView(frame: CGRect(x:210, y:75, width: 20, height: 30))
@@ -49,19 +48,27 @@ class MemoryViewController: UIViewController {
     
     func startTime() {
         time = setUpTimer()
-        secondTimer = time.timer
-        secondTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(MemoryViewController.updateTimeImages)), userInfo: nil, repeats: true)
-        time.startTime()
+        time.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(MemoryViewController.updateTimeImages)), userInfo: nil, repeats: true)
     }
+    
+//    func updateImages(time: TimeInterval){
+//        let minutes = Int(time)/60 % 60
+//        let sec = Int(time) % 60 / 10
+//        let sec2 = Int(time) % 60 % 10
+//
+//        self.time.minImg = self.time.timeImageArray[minutes]
+//        self.time.secondImg = self.time.timeImageArray[sec]
+//        self.time.second2Img = self.time.timeImageArray[sec2]
+//    }
     
     func setUpTimer() -> Time {
         var ourTime: Time
         if ourDifficulty.difficulty == "Easy"{
-            ourTime = Time(seconds: 120)
+            ourTime = Time(seconds: 120, gameType: "Memory")
         } else if ourDifficulty.difficulty == "Medium"{
-            ourTime = Time(seconds: 105)
+            ourTime = Time(seconds: 105, gameType: "Memory")
         } else {
-            ourTime = Time(seconds:90)
+            ourTime = Time(seconds:90, gameType: "Memory")
         }
         return ourTime
     }
@@ -103,20 +110,26 @@ class MemoryViewController: UIViewController {
     }
     //update numbers based on time
     @objc func updateTimeImages(){
-        minutes.image = time.minImg
-        seconds.image = time.secondImg
-        seconds2.image = time.second2Img
-        
-        if time.seconds == 0 {
+        if time.seconds > 0 {
+
+            print(time.formatedTime(time: TimeInterval(time.seconds)))
+            time.updateImages(time: TimeInterval(time.seconds))
             minutes.image = time.minImg
             seconds.image = time.secondImg
             seconds2.image = time.second2Img
-            secondTimer.invalidate()
+            time.seconds = time.seconds - 1
+
+        }
+        else {
+            time.updateImages(time: TimeInterval(time.seconds))
+            seconds2.image = time.second2Img
+            time.timer.invalidate()
             let alert = UIAlertController(title: "GAME OVER", message: "Times UP", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
         }
     }
+    
     // creates score ui
     func scoreUI(){
         let scoreSpace = UIImageView(frame: CGRect(x:775, y: 75, width: 80, height: 30))
@@ -169,8 +182,7 @@ class MemoryViewController: UIViewController {
         let storeCoordinates = MatchCoordinates()
         storeCoordinates.row = row
         storeCoordinates.col = col
-        if possibleMatch.row == nil {
-         //   var storeCoordinates = MatchCoordinates()
+        if possibleMatch.row == nil || (possibleMatch.row == row && possibleMatch.col == col){
             possibleMatch = storeCoordinates
             return
         }
@@ -216,3 +228,4 @@ class MemoryViewController: UIViewController {
     */
 
 }
+

@@ -2,7 +2,7 @@
 //  Time.swift
 //  Kids_Joy_Center
 //
-//  Created by Joseph Hoang on 3/19/18.
+//  Created by Joseph Hoang on 3/21/18.
 //  Copyright © 2018 Joe Hoang. All rights reserved.
 //
 
@@ -11,6 +11,7 @@ import UIKit
 
 class Time {
     var timer = Timer()
+    var gameType: String
     var seconds: Int
     var minImg: UIImage?
     var secondImg: UIImage?
@@ -27,8 +28,9 @@ class Time {
         UIImage(named: "cartoon-number-8")!,
         UIImage(named: "cartoon-number-9")!,
         ]
-    init(seconds: Int){
+    init(seconds: Int, gameType: String){
         self.seconds = seconds
+        self.gameType = gameType
     }
     
     func updateImages(time: TimeInterval){
@@ -41,9 +43,11 @@ class Time {
         self.second2Img = timeImageArray[sec2]
     }
     
-    func startTime() {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(Time.updateTime)), userInfo: nil, repeats: true)
-    }
+//    func startTime() {
+//        if gameType == "Memory" {
+//            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(MemoryViewController.updateTimeImages)), userInfo: nil, repeats: true)
+//        }
+//    }
     
     func formatedTime(time:TimeInterval) -> String {
         let minutes = Int(time)/60 % 60
@@ -52,17 +56,17 @@ class Time {
         
     }
     
-    @objc func updateTime() -> Int{
-   //     print (seconds)
-        print(formatedTime(time: TimeInterval(self.seconds)))
-        if self.seconds > 0{
-            updateImages(time: TimeInterval(self.seconds))
-            self.seconds = self.seconds - 1
-            return self.seconds
-        } else {
-            updateImages(time: TimeInterval(self.seconds))
-            self.timer.invalidate()
-            return 0
-        }
-    }
+//    @objc func updateTime() -> Int{
+//        //     print (seconds)
+//        print(formatedTime(time: TimeInterval(self.seconds)))
+//        if self.seconds > 0{
+//            updateImages(time: TimeInterval(self.seconds))
+//            self.seconds = self.seconds - 1
+//            return self.seconds
+//        } else {
+//            updateImages(time: TimeInterval(self.seconds))
+//            //      self.timer.invalidate()
+//            return 0
+//        }
+//    }
 }
