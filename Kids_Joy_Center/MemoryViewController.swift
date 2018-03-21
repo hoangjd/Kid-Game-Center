@@ -20,20 +20,63 @@ class MemoryViewController: UIViewController {
         }
     }
     
+    class AlreadySolved {
+        var rowAndCol = [[Bool]]()
+        
+        init(sizeRow: Int, sizeCol: Int){
+            for _ in 0..<sizeRow {
+                let arrayToAppend = [Bool](repeating: false, count: sizeCol)
+                self.rowAndCol.append(arrayToAppend)
+            }
+        }
+        
+        func checkSolved() -> Bool {
+            var answer = true
+            for i in 0..<rowAndCol.count {
+                for j in 0..<rowAndCol[0].count {
+                    if !rowAndCol[i][j]{
+                        answer = false
+                        return answer
+                    }
+                }
+            }
+            return answer
+        }
+    }
     
+    var solved = AlreadySolved(sizeRow: 0, sizeCol: 0)
     var ourDifficulty = GameAndDifficulty()
     var createBoardValues = AllMemoryCards(difficulty: "")
     var buttonArray = [[UIButton]]()
     var possibleMatch = MatchCoordinates()
     var time = Time(seconds: 0 , gameType: "Memory")
+    
     let minutes = UIImageView(frame: CGRect(x:140, y:75, width: 20, height: 30))
     let seconds = UIImageView(frame: CGRect(x:180, y:75, width: 20, height: 30))
     let seconds2 = UIImageView(frame: CGRect(x:210, y:75, width: 20, height: 30))
-    var secondTimer = Timer()
+    let score1Img = UIImageView(frame: CGRect(x:895, y:75, width: 20, height: 30))
+    let score2Img = UIImageView(frame: CGRect(x:925, y:75, width: 20, height: 30))
+    
+    var scoreTimer = Timer()
+    var scoreSeconds = 0
+    var finalScore = 0
+    
+    let numberImageArray: [UIImage] = [
+        UIImage(named: "cartoon-number-0")!,
+        UIImage(named: "cartoon-number-1")!,
+        UIImage(named: "cartoon-number-2")!,
+        UIImage(named: "cartoon-number-3")!,
+        UIImage(named: "cartoon-number-4")!,
+        UIImage(named: "cartoon-number-5")!,
+        UIImage(named: "cartoon-number-6")!,
+        UIImage(named: "cartoon-number-7")!,
+        UIImage(named: "cartoon-number-8")!,
+        UIImage(named: "cartoon-number-9")!,
+        ]
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.view.backgroundColor = UIColor(patternImage: UIImage(named:"background")!)\
 
         startTime()
         createBoardValues = AllMemoryCards(difficulty: ourDifficulty.difficulty!)
@@ -43,7 +86,6 @@ class MemoryViewController: UIViewController {
         scoreUI()
         
 
-        // Do any additional setup after loading the view.
     }
     
     func startTime() {
@@ -51,15 +93,11 @@ class MemoryViewController: UIViewController {
         time.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(MemoryViewController.updateTimeImages)), userInfo: nil, repeats: true)
     }
     
-//    func updateImages(time: TimeInterval){
-//        let minutes = Int(time)/60 % 60
-//        let sec = Int(time) % 60 / 10
-//        let sec2 = Int(time) % 60 % 10
-//
-//        self.time.minImg = self.time.timeImageArray[minutes]
-//        self.time.secondImg = self.time.timeImageArray[sec]
-//        self.time.second2Img = self.time.timeImageArray[sec2]
-//    }
+    func startScoreTimer() {
+        scoreSeconds = 0
+        scoreTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(MemoryViewController.updateScoreTime)), userInfo: nil, repeats: true)
+    }
+    
     
     func setUpTimer() -> Time {
         var ourTime: Time
@@ -81,12 +119,16 @@ class MemoryViewController: UIViewController {
         background.image = backgroundImg
         self.view.addSubview(background)
     }
+    
+    
     //build view for cards
     func buildBoardView() {
         let boardSpace = UIView(frame: CGRect(x: 106, y: 150, width: 800, height: 550))
         self.view.addSubview(boardSpace)
         individualCardsUI(board: boardSpace)
     }
+    
+    
     //create time ui
     func timeUI() {
         let timeSpace = UIImageView(frame: CGRect(x: 50,y: 75,width: 50,height: 30 ))
@@ -108,6 +150,25 @@ class MemoryViewController: UIViewController {
         self.view.addSubview(seconds2)
         
     }
+    
+    // creates score ui
+    func scoreUI(){
+        let scoreSpace = UIImageView(frame: CGRect(x:775, y: 75, width: 80, height: 30))
+        scoreSpace.contentMode = .scaleAspectFill
+        scoreSpace.image = UIImage(named:"score")
+        self.view.addSubview(scoreSpace)
+        
+        score1Img.contentMode = .scaleAspectFill
+        score2Img.contentMode = .scaleAspectFill
+        
+        
+        score1Img.image = numberImageArray[finalScore / 10]
+        score2Img.image = numberImageArray[finalScore % 10]
+        self.view.addSubview(score1Img)
+        self.view.addSubview(score2Img)
+        
+    }
+    
     //update numbers based on time
     @objc func updateTimeImages(){
         if time.seconds > 0 {
@@ -124,23 +185,21 @@ class MemoryViewController: UIViewController {
             time.updateImages(time: TimeInterval(time.seconds))
             seconds2.image = time.second2Img
             time.timer.invalidate()
-            let alert = UIAlertController(title: "GAME OVER", message: "Times UP", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-            present(alert, animated: true, completion: nil)
+            endTimeAlert()
         }
     }
     
-    // creates score ui
-    func scoreUI(){
-        let scoreSpace = UIImageView(frame: CGRect(x:775, y: 75, width: 80, height: 30))
-        scoreSpace.contentMode = .scaleAspectFill
-        scoreSpace.image = UIImage(named:"score")
-        self.view.addSubview(scoreSpace)
+    func endTimeAlert() {
+        let alert = UIAlertController(title: "GAME OVER", message: "Times UP", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
+    
     // create all of the cards
     func individualCardsUI(board: UIView) {
         let row = createBoardValues.arrayOfCards.count
         let col = createBoardValues.arrayOfCards[0].count
+        initSolvedArray(row: row, col: col)
         for i in 0..<row {
             var singleButtonRow = [UIButton]()
             for j in 0..<col {
@@ -164,6 +223,7 @@ class MemoryViewController: UIViewController {
         }
     }
     
+    
     @objc func flipCard(sender: UIButton) {
         let row = createBoardValues.arrayOfCards.count
         let col = createBoardValues.arrayOfCards[0].count
@@ -171,6 +231,12 @@ class MemoryViewController: UIViewController {
         for i in 0..<row {
             for j in 0..<col {
                 if sender == buttonArray[i][j] {
+                    if solved.rowAndCol[i][j] {
+                        return
+                    }
+                    if !(scoreTimer.isValid) {
+                        startScoreTimer()
+                    }
                     sender.setBackgroundImage(UIImage(named: "\(createBoardValues.arrayOfCards[i][j].image!)"), for: .normal)
                     checkMatch(row: i, col: j)
                 }
@@ -190,7 +256,14 @@ class MemoryViewController: UIViewController {
             let matchRow = possibleMatch.row
             let matchCol = possibleMatch.col
             if createBoardValues.arrayOfCards[matchRow!][matchCol!].cardIdentifier == createBoardValues.arrayOfCards[row][col].cardIdentifier {
+                updateSolved(row: matchRow!, col: matchCol!, row2: row, col2: col)
+                produceScore()
+                updateScoreImage()
+                scoreTimer.invalidate()
                 possibleMatch.clearCoordinates()
+                if solved.checkSolved() {
+                    winning()
+                }
                 return
             } else {
                 buttonArray[matchRow!][matchCol!].setBackgroundImage(UIImage(named:"question"), for: .normal)
@@ -200,6 +273,44 @@ class MemoryViewController: UIViewController {
             }
         }
     }
+    
+    func winning() {
+        scoreTimer.invalidate()
+        time.timer.invalidate()
+        let Alert = UIAlertController(title: "You Win", message: "Score: \(finalScore)" , preferredStyle: .alert)
+        Alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(Alert, animated: true, completion: nil)
+    }
+    
+    func initSolvedArray(row: Int, col: Int) {
+        let make = AlreadySolved(sizeRow: row, sizeCol: col)
+        solved = make
+    }
+    
+    func updateSolved(row: Int, col: Int, row2: Int, col2: Int){
+        solved.rowAndCol[row][col] = true
+        solved.rowAndCol[row2][col2] = true
+    }
+    
+    @objc func updateScoreTime() {
+        scoreSeconds = scoreSeconds + 1
+    }
+    
+    func produceScore() {
+        if scoreSeconds <= 3 {
+            finalScore += 5
+        } else if scoreSeconds > 3 && scoreSeconds <= 7 {
+            finalScore += 4
+        } else {
+            finalScore += 3
+        }
+    }
+    
+    func updateScoreImage() {
+        score1Img.image = numberImageArray[finalScore / 10]
+        score2Img.image = numberImageArray[finalScore % 10]
+    }
+    
     override func willMove(toParentViewController parent: UIViewController?) {
         super.willMove(toParentViewController: parent)
         if parent == nil {
@@ -208,9 +319,6 @@ class MemoryViewController: UIViewController {
     }
 
     
-    
-    
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
