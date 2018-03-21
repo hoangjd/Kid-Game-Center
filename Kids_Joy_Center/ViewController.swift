@@ -109,6 +109,10 @@ class ViewController: UIViewController {
     func moveToGame(_ game: String){
         if game == "Memory" {
             performSegue(withIdentifier: "toMemoryGame", sender: self)
+        } else if game == "Sort" {
+            performSegue(withIdentifier: "toSortingGame", sender: self)
+        } else if game == "Balloon" {
+            performSegue(withIdentifier: "toBalloonGame", sender: self)
         }
     }
     
@@ -117,6 +121,14 @@ class ViewController: UIViewController {
         if let destination = segue.destination as? MemoryViewController{
             destination.title = "Memory"
             destination.ourDifficulty = choice
+        }
+        
+        if let destination = segue.destination as? SortingViewController{
+            destination.title = "Sorting"
+        }
+        
+        if let destination = segue.destination as? BalloonViewController{
+            destination.title = "Balloon Pop"
         }
     }
     

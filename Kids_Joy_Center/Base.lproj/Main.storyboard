@@ -158,10 +158,10 @@
             </objects>
             <point key="canvasLocation" x="1083" y="-552"/>
         </scene>
-        <!--View Controller-->
+        <!--Sorting View Controller-->
         <scene sceneID="MKI-eQ-WxT">
             <objects>
-                <viewController id="UG9-3U-HBI" sceneMemberID="viewController">
+                <viewController id="UG9-3U-HBI" customClass="SortingViewController" customModule="Kids_Joy_Center" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LJk-0y-T49">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -173,10 +173,10 @@
             </objects>
             <point key="canvasLocation" x="1166" y="130"/>
         </scene>
-        <!--View Controller-->
+        <!--Balloon View Controller-->
         <scene sceneID="IYF-3L-SXD">
             <objects>
-                <viewController id="YAh-I6-xSE" sceneMemberID="viewController">
+                <viewController id="YAh-I6-xSE" customClass="BalloonViewController" customModule="Kids_Joy_Center" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="skJ-bN-kXx">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
