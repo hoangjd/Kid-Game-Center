@@ -14,4 +14,5 @@ class SingleVehicle {
     var isAir = false
     var isWater = false
     var isLand = false
+    
 }

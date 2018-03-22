@@ -47,7 +47,7 @@ class AllVehicles {
     }
     
     
-    func pickAmountFromEachCategory() {
+    private func pickAmountFromEachCategory() {
         var numberOfItems: Int = 0
         var arrayOf3Types: [Int] = [Int](repeatElement(0, count: 3))
         if difficulty == "Easy" {
@@ -75,7 +75,7 @@ class AllVehicles {
         }
     }
     
-    func identifyVehicles(randItem: Int) -> SingleVehicle {
+    private func identifyVehicles(randItem: Int) -> SingleVehicle {
         let vehicle = SingleVehicle()
         if randItem == 0 {
             vehicle.isAir = true
@@ -87,7 +87,7 @@ class AllVehicles {
         return vehicle
     }
     
-    func randomlyChooseFromEachCategory() {
+    private func randomlyChooseFromEachCategory() {
         for vehicle in allArray {
             if vehicle.isAir {
                 randomNoRepeats(vehicle: vehicle, array: &airArray)
@@ -99,7 +99,7 @@ class AllVehicles {
         }
     }
     
-    func randomNoRepeats(vehicle: SingleVehicle, array: inout [Int]) {
+    private func randomNoRepeats(vehicle: SingleVehicle, array: inout [Int]) {
         var rand = Int(arc4random_uniform(5))
         if array[rand] == 0 {
             array[rand] += 1
