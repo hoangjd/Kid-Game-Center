@@ -15,9 +15,28 @@ class SortingViewController: UIViewController {
     let seconds2 = UIImageView(frame: CGRect(x:210, y:720, width: 20, height: 30))
     let score1Img = UIImageView(frame: CGRect(x:895, y:720, width: 20, height: 30))
     let score2Img = UIImageView(frame: CGRect(x:925, y:720, width: 20, height: 30))
+    
+    var ourDifficulty = GameAndDifficulty()
+ //   var getOurVehicles = AllVehicles(difficulty: "")
+    
+    let numberImageArray: [UIImage] = [
+        UIImage(named: "cartoon-number-0")!,
+        UIImage(named: "cartoon-number-1")!,
+        UIImage(named: "cartoon-number-2")!,
+        UIImage(named: "cartoon-number-3")!,
+        UIImage(named: "cartoon-number-4")!,
+        UIImage(named: "cartoon-number-5")!,
+        UIImage(named: "cartoon-number-6")!,
+        UIImage(named: "cartoon-number-7")!,
+        UIImage(named: "cartoon-number-8")!,
+        UIImage(named: "cartoon-number-9")!,
+        ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var getOurVehicles = AllVehicles(difficulty: ourDifficulty.difficulty!)
+        
         
         addBackgroundImage()
         addSortingBar()
@@ -53,6 +72,18 @@ class SortingViewController: UIViewController {
         scoreSpace.contentMode = .scaleAspectFill
         scoreSpace.image = UIImage(named:"score")
         self.view.addSubview(scoreSpace)
+    }
+    
+    func setUpTimer() -> Time {
+        var ourTime: Time
+        if ourDifficulty.difficulty == "Easy"{
+            ourTime = Time(seconds: 120)
+        } else if ourDifficulty.difficulty == "Medium"{
+            ourTime = Time(seconds: 105)
+        } else {
+            ourTime = Time(seconds:90)
+        }
+        return ourTime
     }
 
 

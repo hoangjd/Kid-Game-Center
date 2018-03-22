@@ -11,7 +11,6 @@ import UIKit
 
 class Time {
     var timer = Timer()
-    var gameType: String
     var seconds: Int
     var minImg: UIImage?
     var secondImg: UIImage?
@@ -26,11 +25,10 @@ class Time {
         UIImage(named: "cartoon-number-6")!,
         UIImage(named: "cartoon-number-7")!,
         UIImage(named: "cartoon-number-8")!,
-        UIImage(named: "cartoon-number-9")!,
-        ]
-    init(seconds: Int, gameType: String){
+        UIImage(named: "cartoon-number-9")!]
+    
+    init(seconds: Int){
         self.seconds = seconds
-        self.gameType = gameType
     }
     
     func updateImages(time: TimeInterval){

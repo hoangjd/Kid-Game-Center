@@ -49,7 +49,7 @@ class MemoryViewController: UIViewController {
     var createBoardValues = AllMemoryCards(difficulty: "")
     var buttonArray = [[UIButton]]()
     var possibleMatch = MatchCoordinates()
-    var time = Time(seconds: 0 , gameType: "Memory")
+    var time = Time(seconds: 0)
     
     let minutes = UIImageView(frame: CGRect(x:140, y:75, width: 20, height: 30))
     let seconds = UIImageView(frame: CGRect(x:180, y:75, width: 20, height: 30))
@@ -102,11 +102,11 @@ class MemoryViewController: UIViewController {
     func setUpTimer() -> Time {
         var ourTime: Time
         if ourDifficulty.difficulty == "Easy"{
-            ourTime = Time(seconds: 120, gameType: "Memory")
+            ourTime = Time(seconds: 120)
         } else if ourDifficulty.difficulty == "Medium"{
-            ourTime = Time(seconds: 105, gameType: "Memory")
+            ourTime = Time(seconds: 105)
         } else {
-            ourTime = Time(seconds:90, gameType: "Memory")
+            ourTime = Time(seconds:90)
         }
         return ourTime
     }

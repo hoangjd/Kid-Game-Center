@@ -117,7 +117,6 @@ class ViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     //   if (segue.destination
         if let destination = segue.destination as? MemoryViewController{
             destination.title = "Memory"
             destination.ourDifficulty = choice
@@ -125,10 +124,12 @@ class ViewController: UIViewController {
         
         if let destination = segue.destination as? SortingViewController{
             destination.title = "Sorting"
+            destination.ourDifficulty = choice
         }
         
         if let destination = segue.destination as? BalloonViewController{
             destination.title = "Balloon Pop"
+            destination.ourDifficulty = choice
         }
     }
     

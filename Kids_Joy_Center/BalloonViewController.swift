@@ -15,6 +15,8 @@ class BalloonViewController: UIViewController {
     let seconds2 = UIImageView(frame: CGRect(x:210, y:75, width: 20, height: 30))
     let score1Img = UIImageView(frame: CGRect(x:895, y:75, width: 20, height: 30))
     let score2Img = UIImageView(frame: CGRect(x:925, y:75, width: 20, height: 30))
+    
+    var ourDifficulty = GameAndDifficulty()
 
     override func viewDidLoad() {
         super.viewDidLoad()
