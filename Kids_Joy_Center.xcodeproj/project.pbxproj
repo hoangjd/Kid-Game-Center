@@ -92,6 +92,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D80619D320643AC700B3C3BE /* Memory */ = {
+			isa = PBXGroup;
+			children = (
+				D87BE028205C78B20024FE84 /* MemoryViewController.swift */,
+				D8A92E6B205EC9A1004273F9 /* AllMemoryCards.swift */,
+				D8A92E69205EC458004273F9 /* SingleMemoryCard.swift */,
+			);
+			path = Memory;
+			sourceTree = "<group>";
+		};
+		D80619D420643B9B00B3C3BE /* Sort */ = {
+			isa = PBXGroup;
+			children = (
+				D80619CA2062E3E200B3C3BE /* SortingViewController.swift */,
+				D80619D02063338D00B3C3BE /* SingleVehicle.swift */,
+				D80619CE2063184100B3C3BE /* AllVehicles.swift */,
+			);
+			path = Sort;
+			sourceTree = "<group>";
+		};
 		D87BDFEC205C24F40024FE84 = {
 			isa = PBXGroup;
 			children = (
@@ -115,21 +135,17 @@
 		D87BDFF7205C24F40024FE84 /* Kids_Joy_Center */ = {
 			isa = PBXGroup;
 			children = (
+				D80619D420643B9B00B3C3BE /* Sort */,
+				D80619D320643AC700B3C3BE /* Memory */,
 				D87BDFF8205C24F40024FE84 /* AppDelegate.swift */,
 				D87BDFFA205C24F40024FE84 /* ViewController.swift */,
-				D87BE028205C78B20024FE84 /* MemoryViewController.swift */,
-				D80619CA2062E3E200B3C3BE /* SortingViewController.swift */,
 				D80619CC2062F22E00B3C3BE /* BalloonViewController.swift */,
 				D87BDFFC205C24F40024FE84 /* Main.storyboard */,
 				D87BDFFF205C24F40024FE84 /* Assets.xcassets */,
 				D87BE001205C24F40024FE84 /* LaunchScreen.storyboard */,
 				D87BE004205C24F40024FE84 /* Info.plist */,
 				D87BE026205C35E90024FE84 /* GameAndDifficulty.swift */,
-				D8A92E69205EC458004273F9 /* SingleMemoryCard.swift */,
-				D8A92E6B205EC9A1004273F9 /* AllMemoryCards.swift */,
 				D80619C82062B19C00B3C3BE /* Time.swift */,
-				D80619CE2063184100B3C3BE /* AllVehicles.swift */,
-				D80619D02063338D00B3C3BE /* SingleVehicle.swift */,
 			);
 			path = Kids_Joy_Center;
 			sourceTree = "<group>";

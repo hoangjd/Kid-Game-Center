@@ -15,10 +15,19 @@ class SortingViewController: UIViewController {
     let seconds2 = UIImageView(frame: CGRect(x:230, y:720, width: 20, height: 30))
     let score1Img = UIImageView(frame: CGRect(x:895, y:720, width: 20, height: 30))
     let score2Img = UIImageView(frame: CGRect(x:925, y:720, width: 20, height: 30))
+    let airSpace = UIView(frame: CGRect(x:0, y:150, width: 1024, height: 317))
+    let landSpace1 = UIView(frame: CGRect(x: 750, y:467, width: 274, height:158))
+    let landSpace2 = UIView(frame: CGRect(x: 500, y:625, width: 524, height:143))
+    let waterSpace1 = UIView(frame: CGRect(x: 0, y:467, width: 750, height:158))
+    let waterSpace2 = UIView(frame: CGRect(x: 0, y:625, width: 500, height:143))
     
+    var moveImg = [UIPanGestureRecognizer]()
     var ourDifficulty = GameAndDifficulty()
     var getOurVehicles = AllVehicles(difficulty: "")
     var time = Time(seconds: 0)
+    var originalLocations = [CGPoint]()
+    var singleVehicleImage: UIImage!
+    var findSender = -1
     
     let numberImageArray: [UIImage] = [
         UIImage(named: "cartoon-number-0")!,
@@ -58,15 +67,25 @@ class SortingViewController: UIViewController {
         super.viewDidLoad()
         
         getOurVehicles = AllVehicles(difficulty: ourDifficulty.difficulty!)
-        
+     //   moveImg = UIPanGestureRecognizer(target: self, action: #selector(letsMove))
+        self.moveImg = [UIPanGestureRecognizer](repeatElement(UIPanGestureRecognizer(target: self, action: #selector(letsMove)), count: getOurVehicles.allArray.count))
+        setUpMoveArray()
         startTime()
         addBackgroundImage()
         addSortingBar()
         timeUI()
         scoreUI()
         setUpVehicles()
+        
+
 
         // Do any additional setup after loading the view.
+    }
+    
+    func setUpMoveArray(){
+        for i in 0..<getOurVehicles.allArray.count {
+            moveImg[i] = UIPanGestureRecognizer(target: self, action: #selector(letsMove))
+        }
     }
     
     func addBackgroundImage() {
@@ -80,6 +99,24 @@ class SortingViewController: UIViewController {
         let background = UIView(frame: CGRect(x: 0, y: 0, width: 1024, height: 150))
         background.backgroundColor = UIColor(red: 153/255, green: 204/255, blue: 250/255, alpha: 1)
         self.view.addSubview(background)
+    }
+    
+    func addSpaceTest() {
+        airSpace.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.4)
+        self.view.addSubview(airSpace)
+        
+        landSpace1.backgroundColor = UIColor(red: 0/255, green: 255/255, blue: 0/255, alpha: 0.4)
+        self.view.addSubview(landSpace1)
+        
+        landSpace2.backgroundColor = UIColor(red: 0/255, green: 255/255, blue: 0/255, alpha: 0.4)
+        self.view.addSubview(landSpace2)
+        
+        waterSpace1.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 0.4)
+        self.view.addSubview(waterSpace1)
+        
+        waterSpace2.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 0.4)
+        self.view.addSubview(waterSpace2)
+        
     }
     
     func timeUI() {
@@ -144,23 +181,85 @@ class SortingViewController: UIViewController {
         }
     }
     
+    
+      @objc func letsMove(_ sender: UIPanGestureRecognizer) {
+
+        let imageView = sender.view!
+
+        switch sender.state {
+        case .began, .changed:
+            moveViewWithPan(view: imageView, sender: sender)
+        case .ended:
+            checkForCorrectPlacement(view: imageView, sender: sender)
+        default:
+            break
+        }
+    }
+    
+    
+    func moveViewWithPan(view: UIView, sender: UIPanGestureRecognizer) {
+        var point = sender.translation(in: self.view)
+        view.center = CGPoint(x: view.center.x + point.x, y: view.center.y + point.y)
+        sender.setTranslation(CGPoint.zero, in: view)
+    }
+    
+    func checkForCorrectPlacement(view: UIView, sender: UIPanGestureRecognizer) {
+        for i in 0 ..< moveImg.count {
+            if moveImg[i] == sender {
+                if getOurVehicles.allArray[i].isAir {
+                    if view.frame.intersects(airSpace.frame) {
+                        print("air")
+                    } else {
+                        returnViewToOrigin(index: i, view: view)
+                    }
+                } else if getOurVehicles.allArray[i].isWater {
+                    if view.frame.intersects(waterSpace1.frame) || view.frame.intersects(waterSpace2.frame) {
+                        print("water")
+                    } else {
+                        returnViewToOrigin(index: i, view: view)
+                    }
+                } else if getOurVehicles.allArray[i].isLand {
+                    if view.frame.intersects(landSpace1.frame) || view.frame.intersects(landSpace2.frame){
+                        print("land")
+                    } else {
+                        returnViewToOrigin(index: i, view: view)
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    func returnViewToOrigin(index: Int, view: UIView) {
+        UIView.animate(withDuration: 1, animations: {
+            view.frame.origin = self.originalLocations[index]})
+    }
+
+    
+    
     func setUpVehicles() {
         for i in 0 ..< getOurVehicles.allArray.count {
             if ourDifficulty.difficulty == "Easy" {
                 let singleVehicleImage = UIImageView(frame: CGRect(x:232 + (i * 70), y:75, width: 60, height: 60))
                 singleVehicleImage.contentMode = .scaleAspectFit
                 singleVehicleImage.image = checkTypeAndReturnImage(vehicle: getOurVehicles.allArray[i])
+                singleVehicleImage.isUserInteractionEnabled = true
+                singleVehicleImage.addGestureRecognizer(moveImg[i])
                 self.view.addSubview(singleVehicleImage)
+                originalLocations.append(singleVehicleImage.frame.origin)
             } else if ourDifficulty.difficulty == "Medium" {
                 let singleVehicleImage = UIImageView(frame: CGRect(x:162 + (i * 70), y:75, width: 60, height: 60))
                 singleVehicleImage.contentMode = .scaleAspectFit
                 singleVehicleImage.image = checkTypeAndReturnImage(vehicle: getOurVehicles.allArray[i])
+                singleVehicleImage.isUserInteractionEnabled = true
                 self.view.addSubview(singleVehicleImage)
             } else if ourDifficulty.difficulty == "Hard"{
                 let singleVehicleImage = UIImageView(frame: CGRect(x:92 + (i * 70), y:75, width: 60, height: 60))
                 singleVehicleImage.contentMode = .scaleAspectFit
                 singleVehicleImage.image = checkTypeAndReturnImage(vehicle: getOurVehicles.allArray[i])
+                singleVehicleImage.isUserInteractionEnabled = true
                 self.view.addSubview(singleVehicleImage)
+                
             }
         }
     }
