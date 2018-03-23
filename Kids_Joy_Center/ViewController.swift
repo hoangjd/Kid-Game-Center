@@ -21,8 +21,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var sortButton: UIButton!
     @IBOutlet weak var balloonButton: UIButton!
     
-    var allHighScores = [HighScore]()
+   // var allHighScores = [HighScore](repeatElement(HighScore(gameType:), count: <#T##Int#>)//HighScore(gameType: "Memory", score: 0)
     
+    var memoryHighScore = [HighScore](repeatElement(HighScore(gameType: "Memory", score: 0), count: 5))
+    var sortingHighScore = [HighScore](repeatElement(HighScore(gameType: "Sort", score: 0), count: 5))
+    var balloonHighScore = [HighScore](repeatElement(HighScore(gameType: "Balloon",score: 0), count: 5))
+    var allHighScores: [[HighScore]]!
     var choice = GameAndDifficulty()
 
    // var rand = AllMemoryCards(difficulty: "Medium")
@@ -30,10 +34,84 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        if let readAllHighScores = UserDefaults.standard.object(forKey: "All Scores") as? Data {
-//            allHighScores = NSKeyedUnarchiver.unarchiveObject(with: readAllHighScores) as! [HighScore]
-//        }
+        allHighScores = [memoryHighScore, sortingHighScore, balloonHighScore]
+        
+
+            if let readAllHighScores = UserDefaults.standard.object(forKey: "allScores") as? Data {
+                allHighScores = NSKeyedUnarchiver.unarchiveObject(with: readAllHighScores) as! [[HighScore]]
+            }
+        outputData()
+
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+//    func setHS() {
+////        var game = "Memory"
+////        var hs = 0
+////
+//        let newHS = HighScore(gameType: game, score: hs)
+//        for i in 0..<allHighScores.count {
+//            for j in 0..<allHighScores[i].count{
+//                if i == 0 {
+//                    allHighScores[i][j].game = "Memory"
+//                } else if i == 1 {
+//                    allHighScores[i][j].game = "Sort"
+//                } else if i == 2 {
+//                    allHighScores[i][j].game = "Balloon"
+//                }
+//            }
+//        }
+//
+//    //    if newHS.gameType
+//   //     allHighScores = (newHS)
+//        updateDatabase()
+//        outputData()
+//
+//    }
+    
+    func setHS() {
+        for i in 0..<allHighScores.count {
+            for j in 0..<allHighScores[i].count{
+                if i == 0 {
+                    let newHS = HighScore(gameType: "Memory", score: 0)
+                    allHighScores[i][j] = newHS
+                    updateDatabase()
+                } else if i == 1 {
+                    let newHS = HighScore(gameType: "Sort", score: 0)
+                    allHighScores[i][j] = newHS
+                    updateDatabase()
+                } else if i == 2 {
+                    let newHS = HighScore(gameType: "Balloon", score: 0)
+                    allHighScores[i][j] = newHS
+                    updateDatabase()
+                }
+            }
+        }
+        outputData()
+        
+    }
+    
+    func outputData() {
+        for i in 0..<allHighScores.count {
+            for j in 0..<allHighScores[i].count{
+                print(allHighScores[i][j].game)
+                print("\(allHighScores[i][j].score)")
+            }
+        }
+    }
+    
+    func resetDefaults() {
+        let defaults = UserDefaults.standard
+        let dictionary = defaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            defaults.removeObject(forKey: "allScores")
+        }
+    }
+    
+    func updateDatabase(){
+        let highScoreData = NSKeyedArchiver.archivedData(withRootObject: allHighScores)
+        UserDefaults.standard.set(highScoreData, forKey: "allScores")
+        UserDefaults.standard.synchronize()
     }
 
     
@@ -95,6 +173,8 @@ class ViewController: UIViewController {
 
     @IBAction func playButtonPushed(_ sender: UIButton) {
       //  var ourChoices[[String]]
+        setHS()
+//        print("\(allHighScores.game) \(allHighScores.score)")
         if let game = choice.game, let difficulty = choice.difficulty{
             print("\(game) \(difficulty)")
             moveToGame(game)
@@ -138,6 +218,7 @@ class ViewController: UIViewController {
             destination.ourDifficulty = choice
         }
     }
+    
     
     
     

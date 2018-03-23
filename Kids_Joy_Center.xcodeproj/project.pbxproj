@@ -116,6 +116,14 @@
 			path = Sort;
 			sourceTree = "<group>";
 		};
+		D80619DB2065B47100B3C3BE /* Balloon */ = {
+			isa = PBXGroup;
+			children = (
+				D80619CC2062F22E00B3C3BE /* BalloonViewController.swift */,
+			);
+			path = Balloon;
+			sourceTree = "<group>";
+		};
 		D87BDFEC205C24F40024FE84 = {
 			isa = PBXGroup;
 			children = (
@@ -139,11 +147,11 @@
 		D87BDFF7205C24F40024FE84 /* Kids_Joy_Center */ = {
 			isa = PBXGroup;
 			children = (
+				D80619DB2065B47100B3C3BE /* Balloon */,
 				D80619D420643B9B00B3C3BE /* Sort */,
 				D80619D320643AC700B3C3BE /* Memory */,
 				D87BDFF8205C24F40024FE84 /* AppDelegate.swift */,
 				D87BDFFA205C24F40024FE84 /* ViewController.swift */,
-				D80619CC2062F22E00B3C3BE /* BalloonViewController.swift */,
 				D87BDFFC205C24F40024FE84 /* Main.storyboard */,
 				D87BDFFF205C24F40024FE84 /* Assets.xcassets */,
 				D87BE001205C24F40024FE84 /* LaunchScreen.storyboard */,
