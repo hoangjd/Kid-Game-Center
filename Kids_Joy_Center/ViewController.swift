@@ -123,7 +123,7 @@ class ViewController: UIViewController {
         }
         
         if let destination = segue.destination as? SortingViewController{
-            destination.title = "Sorting"
+            destination.title = "Sort The Vehicles"
             destination.ourDifficulty = choice
         }
         
@@ -141,5 +141,14 @@ class ViewController: UIViewController {
     }
 
 
+}
+
+extension UIViewController{
+    func resetView() {
+        let parent = view.superview
+        view.removeFromSuperview()
+        view = nil
+        parent?.addSubview(view)
+    }
 }
 

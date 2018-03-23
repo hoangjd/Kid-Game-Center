@@ -24,9 +24,10 @@ class MemoryViewController: UIViewController {
         var rowAndCol = [[Bool]]()
         
         init(sizeRow: Int, sizeCol: Int){
-            for _ in 0..<sizeRow {
+            for i in 0..<sizeRow {
                 let arrayToAppend = [Bool](repeating: false, count: sizeCol)
                 self.rowAndCol.append(arrayToAppend)
+                print("\(rowAndCol[i])")
             }
         }
         
@@ -77,16 +78,18 @@ class MemoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        finalScore = 0
         startTime()
         createBoardValues = AllMemoryCards(difficulty: ourDifficulty.difficulty!)
         buildBackground()
         buildBoardView()
         timeUI()
         scoreUI()
+        print("\(solved.checkSolved())")
         
 
     }
+    
     
     func startTime() {
         time = setUpTimer()
@@ -185,20 +188,27 @@ class MemoryViewController: UIViewController {
             time.updateImages(time: TimeInterval(time.seconds))
             seconds2.image = time.second2Img
             time.timer.invalidate()
-            endTimeAlert()
+            presentLossAlert()
         }
     }
     
-    func endTimeAlert() {
-        let alert = UIAlertController(title: "GAME OVER", message: "Times UP", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
+    func presentWinAlert() {
+        let alert = AlertMessage(viewController: self, score: finalScore)
+        alert.presentWinAlert()
     }
+    
+    func presentLossAlert() {
+        let alert = AlertMessage(viewController: self, score: finalScore)
+        alert.endTimeAlert()
+    }
+    
+  
     
     // create all of the cards
     func individualCardsUI(board: UIView) {
         let row = createBoardValues.arrayOfCards.count
         let col = createBoardValues.arrayOfCards[0].count
+        var newButtonArray = [[UIButton]]()
         initSolvedArray(row: row, col: col)
         for i in 0..<row {
             var singleButtonRow = [UIButton]()
@@ -219,8 +229,9 @@ class MemoryViewController: UIViewController {
                 singleButtonRow.append(card)
                 board.addSubview(card)
             }
-            buttonArray.append(singleButtonRow)
+            newButtonArray.append(singleButtonRow)
         }
+        buttonArray = newButtonArray
     }
     
     
@@ -262,7 +273,8 @@ class MemoryViewController: UIViewController {
                 scoreTimer.invalidate()
                 possibleMatch.clearCoordinates()
                 if solved.checkSolved() {
-                    winning()
+                    time.timer.invalidate()
+                    presentWinAlert()
                 }
                 return
             } else {
@@ -274,13 +286,6 @@ class MemoryViewController: UIViewController {
         }
     }
     
-    func winning() {
-        scoreTimer.invalidate()
-        time.timer.invalidate()
-        let Alert = UIAlertController(title: "You Win", message: "Score: \(finalScore)" , preferredStyle: .alert)
-        Alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        present(Alert, animated: true, completion: nil)
-    }
     
     func initSolvedArray(row: Int, col: Int) {
         let make = AlreadySolved(sizeRow: row, sizeCol: col)
@@ -336,4 +341,6 @@ class MemoryViewController: UIViewController {
     */
 
 }
+
+
 

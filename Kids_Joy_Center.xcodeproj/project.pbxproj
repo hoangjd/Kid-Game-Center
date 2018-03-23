@@ -12,6 +12,7 @@
 		D80619CD2062F22E00B3C3BE /* BalloonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80619CC2062F22E00B3C3BE /* BalloonViewController.swift */; };
 		D80619CF2063184100B3C3BE /* AllVehicles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80619CE2063184100B3C3BE /* AllVehicles.swift */; };
 		D80619D12063338D00B3C3BE /* SingleVehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80619D02063338D00B3C3BE /* SingleVehicle.swift */; };
+		D80619D6206547C600B3C3BE /* AlertMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80619D5206547C600B3C3BE /* AlertMessage.swift */; };
 		D87BDFF9205C24F40024FE84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87BDFF8205C24F40024FE84 /* AppDelegate.swift */; };
 		D87BDFFB205C24F40024FE84 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87BDFFA205C24F40024FE84 /* ViewController.swift */; };
 		D87BDFFE205C24F40024FE84 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D87BDFFC205C24F40024FE84 /* Main.storyboard */; };
@@ -48,6 +49,7 @@
 		D80619CC2062F22E00B3C3BE /* BalloonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalloonViewController.swift; sourceTree = "<group>"; };
 		D80619CE2063184100B3C3BE /* AllVehicles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllVehicles.swift; sourceTree = "<group>"; };
 		D80619D02063338D00B3C3BE /* SingleVehicle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleVehicle.swift; sourceTree = "<group>"; };
+		D80619D5206547C600B3C3BE /* AlertMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessage.swift; sourceTree = "<group>"; };
 		D87BDFF5205C24F40024FE84 /* Kids_Joy_Center.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kids_Joy_Center.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D87BDFF8205C24F40024FE84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D87BDFFA205C24F40024FE84 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				D87BE004205C24F40024FE84 /* Info.plist */,
 				D87BE026205C35E90024FE84 /* GameAndDifficulty.swift */,
 				D80619C82062B19C00B3C3BE /* Time.swift */,
+				D80619D5206547C600B3C3BE /* AlertMessage.swift */,
 			);
 			path = Kids_Joy_Center;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				D87BE029205C78B20024FE84 /* MemoryViewController.swift in Sources */,
 				D87BDFFB205C24F40024FE84 /* ViewController.swift in Sources */,
 				D80619CF2063184100B3C3BE /* AllVehicles.swift in Sources */,
+				D80619D6206547C600B3C3BE /* AlertMessage.swift in Sources */,
 				D87BDFF9205C24F40024FE84 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
