@@ -21,12 +21,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var sortButton: UIButton!
     @IBOutlet weak var balloonButton: UIButton!
     
+    var allHighScores = [HighScore]()
+    
     var choice = GameAndDifficulty()
 
    // var rand = AllMemoryCards(difficulty: "Medium")
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        if let readAllHighScores = UserDefaults.standard.object(forKey: "All Scores") as? Data {
+//            allHighScores = NSKeyedUnarchiver.unarchiveObject(with: readAllHighScores) as! [HighScore]
+//        }
         // Do any additional setup after loading the view, typically from a nib.
     }
 
