@@ -22,15 +22,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var balloonButton: UIButton!
     var highScoreView = UIView(frame: CGRect(x: 300, y: 100, width: 400, height: 600))
     
-   // var allHighScores = [HighScore](repeatElement(HighScore(gameType:), count: <#T##Int#>)//HighScore(gameType: "Memory", score: 0)
-    
     var memoryHighScore = [HighScore](repeatElement(HighScore(gameType: "Memory", score: 0), count: 5))
     var sortingHighScore = [HighScore](repeatElement(HighScore(gameType: "Sort", score: 0), count: 5))
     var balloonHighScore = [HighScore](repeatElement(HighScore(gameType: "Balloon",score: 0), count: 5))
     var allHighScores: [[HighScore]]!
     var choice = GameAndDifficulty()
 
-   // var rand = AllMemoryCards(difficulty: "Medium")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,7 +93,6 @@ class ViewController: UIViewController {
         highScoreLabel.textAlignment = .center
         highScoreLabel.text = word
         return highScoreLabel
-  //      highScoreView.addSubview(highScoreLabel)
     }
     
     func displayScore(gameType: Int, Location: Int, view: UIView) {
@@ -138,11 +134,6 @@ class ViewController: UIViewController {
     }
     
     func resetDefaults() {
-//        let defaults = UserDefaults.standard
-//        let dictionary = defaults.dictionaryRepresentation()
-//        dictionary.keys.forEach { key in
-//            defaults.removeObject(forKey: "allScores")
-//        }
         UserDefaults.standard.removeObject(forKey: "allScores")
         UserDefaults.standard.synchronize()
     }
@@ -211,14 +202,10 @@ class ViewController: UIViewController {
     
 
     @IBAction func playButtonPushed(_ sender: UIButton) {
-      //  var ourChoices[[String]]
-    //    setHS()
 
-//        print("\(allHighScores.game) \(allHighScores.score)")
         if let game = choice.game, let difficulty = choice.difficulty{
             print("\(game) \(difficulty)")
             moveToGame(game)
-//            moveToMemoryGame()
         } else {
             let alert = UIAlertController(title: "Error", message: "You must choose a game type and difficulty", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
@@ -226,10 +213,6 @@ class ViewController: UIViewController {
         }
     }
     
-//    func moveToMemoryGame(){
-//        let memoryView = MemoryViewController()
-//        self.navigationController?.pushViewController(memoryView, animated: true)
-//    }
 
     
     func moveToGame(_ game: String){

@@ -23,7 +23,9 @@ class BalloonViewController: UIViewController {
     
     var balloonTimer = Timer()
     var balloonIsBeingUsed = [Bool](repeatElement(false, count: 10))
-    
+    var balloonCatcherTimer = [Timer](repeatElement(Timer(), count: 10))
+    var balloonCatcherSeconds = [Float](repeatElement(0.0, count: 10))
+    var balloonCatcherView = [CGRect](repeatElement(CGRect(x:0, y:0, width: 0, height: 0), count: 10))
     
     var scoreTimer = Timer()
     var scoreSeconds = 0
@@ -63,6 +65,8 @@ class BalloonViewController: UIViewController {
         scoreUI()
         setUp10Locations()
         startTime()
+        createPopAnim()
+    //    createPopAnim()
         // Do any additional setup after loading the view.
     }
     
@@ -109,7 +113,7 @@ class BalloonViewController: UIViewController {
 //            balloonSpace.backgroundColor = UIColor.black
 //            numberSpace.backgroundColor = UIColor.red
             
-            createPopAnim(balloon: balloonSpace)
+ //           createPopAnim(balloon: balloonSpace)
             self.view.addSubview(balloonSpace)
             balloonSpace.addSubview(numberSpace)
             numberViews.append(numberSpace)
@@ -153,14 +157,31 @@ class BalloonViewController: UIViewController {
         }
     }
     
-    func createPopAnim(balloon: UIView) {
-        balloon.isUserInteractionEnabled = true
-        pop = UITapGestureRecognizer(target: self, action: (#selector(popBalloon)))
-        balloon.addGestureRecognizer(pop)
+//    func createPopAnim(view: UIView) {
+//        view.isUserInteractionEnabled = true
+//      //  view.backgroundColor = UIColor.black
+//        pop = UITapGestureRecognizer(target: self, action: (#selector(popBalloon(sender:))))
+//      //  view.addGestureRecognizer(pop)
+//        self.view.addGestureRecognizer(pop)
+//    }
+    
+    func createPopAnim() {
+        self.view.isUserInteractionEnabled = true
+        //  view.backgroundColor = UIColor.black
+        pop = UITapGestureRecognizer(target: self, action: (#selector(popBalloon(sender:))))
+        //  view.addGestureRecognizer(pop)
+        self.view.addGestureRecognizer(pop)
     }
     
-    @objc func popBalloon() {
-        print("pop")
+    @objc func popBalloon(sender: UITapGestureRecognizer) {
+        let point = sender.location(in: self.view)
+ //       let val = balloonCatcherView[0]
+        for i in 0..<10 {
+    //        val = balloonCatcherView[0].frame
+            if balloonCatcherView[i].contains(point){
+                print("pop \(point)")
+            }
+        }
     }
     
     @objc func balloonRand() {
@@ -184,7 +205,9 @@ class BalloonViewController: UIViewController {
   //      while balloonImageView.frame.origin.y > -100 && i < 50{
         //    print (balloonImageView.frame.origin.y)
   //          print (i)
-
+        
+//        let loc = balloonImageView.layer.presentation()?.frame.origin.y
+        balloonCatcherTimer[randLocation] = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: (#selector(BalloonViewController.updateFrameLoc(sender:))), userInfo: randLocation, repeats: true)
             UIView.animate(withDuration: 9,
                            delay: 0,
                            options: [.allowUserInteraction, .allowAnimatedContent],
@@ -192,9 +215,13 @@ class BalloonViewController: UIViewController {
                             self.balloonIsBeingUsed[randLocation] = true
 //                                balloonImageView.frame.origin.y = balloonImageView.frame.origin.y - CGFloat(i)
                                 balloonImageView.frame.origin.y = -100
+          //                      balloonImageView.frame.origin.y = balloonImageView.layer.presentation()!.frame.origin.y
+                //            print(loc)
                             },
                            completion: {(finished: Bool) in
                             balloonImageView.frame.origin.y = 800
+               //             print(loc)
+                            self.balloonCatcherTimer[randLocation].invalidate()
                             self.balloonIsBeingUsed[randLocation] = false
             })
 
@@ -205,14 +232,63 @@ class BalloonViewController: UIViewController {
 
     
 
+    @objc func updateFrameLoc(sender: Timer) {
+        switch sender.userInfo as! Int {
+        case 0:
+            balloonCatcherView[0] = balloonViews[0].layer.presentation()!.frame
+            break
+        case 1:
+             balloonCatcherView[1] = balloonViews[1].layer.presentation()!.frame
+            break
+        case 2:
+             balloonCatcherView[2] = balloonViews[2].layer.presentation()!.frame
+            break
+        case 3:
+             balloonCatcherView[3] = balloonViews[3].layer.presentation()!.frame
+               break
+        case 4:
+             balloonCatcherView[4] = balloonViews[4].layer.presentation()!.frame
+               break
+        case 5:
+             balloonCatcherView[5] = balloonViews[5].layer.presentation()!.frame
+               break
+        case 6:
+            balloonCatcherView[6] = balloonViews[6].layer.presentation()!.frame
+               break
+        case 7:
+            balloonCatcherView[7] = balloonViews[7].layer.presentation()!.frame
+               break
+        case 8:
+            balloonCatcherView[8] = balloonViews[8].layer.presentation()!.frame
+               break
+        case 9:
+            balloonCatcherView[9] = balloonViews[9].layer.presentation()!.frame
+               break
+        default:
+               break
+        }
+//        print(balloonCatcherView[0])
+    }
     
-    
-    
+//    @objc func updateFrameLoc(sender:Timer) {
+//        for i in 0..<balloonCatcherTimer.count {
+//            if sender == balloonCatcherTimer[i]{
+//                balloonCatcherView[i].frame = balloonViews[i].layer.presentation()!.frame
+//                print(balloonCatcherView[0].frame)
+//           //     createPopAnim(view: balloonCatcherView[i])
+//     //           print ("\(balloonViews[i].layer.presentation()!.frame) \(i)")
+//
+//            }
+//        }
+//    }
+
+
     @objc func updateScoreTime() {
         scoreSeconds = scoreSeconds + 1
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+    //    balloonCatcherTimer.invalidate()
         time.timer.invalidate()
         scoreTimer.invalidate()
         balloonTimer.invalidate()
