@@ -62,6 +62,7 @@ class MemoryViewController: UIViewController {
     var scoreSeconds = 0
     var finalScore = 0
     var highScoreList: [[HighScore]]!
+    var memHighScore: [HighScore]!
     
     let numberImageArray: [UIImage] = [
         UIImage(named: "cartoon-number-0")!,
@@ -80,6 +81,7 @@ class MemoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         finalScore = 0
+        memHighScore = highScoreList[0]
         startTime()
         createBoardValues = AllMemoryCards(difficulty: ourDifficulty.difficulty!)
         buildBackground()
@@ -275,6 +277,7 @@ class MemoryViewController: UIViewController {
                 possibleMatch.clearCoordinates()
                 if solved.checkSolved() {
                     time.timer.invalidate()
+                    checkHighScores()
                     presentWinAlert()
                 }
                 return
@@ -315,6 +318,31 @@ class MemoryViewController: UIViewController {
     func updateScoreImage() {
         score1Img.image = numberImageArray[finalScore / 10]
         score2Img.image = numberImageArray[finalScore % 10]
+    }
+    
+    func checkHighScores() {
+        let potentialHS = HighScore(gameType: "Memory", score: finalScore)
+        
+        
+        //   sortHighScore.remove(at: i)
+        
+        for i in 0..<memHighScore.count {
+            if memHighScore[i].score < finalScore {
+                memHighScore.insert(potentialHS, at: i)
+                memHighScore.remove(at: 5)
+                highScoreList[0] = memHighScore
+                //       sortHighScore[i].score = finalScore
+                updateDatabase()
+                return
+            }
+            
+        }
+    }
+    
+    func updateDatabase(){
+        let highScoreData = NSKeyedArchiver.archivedData(withRootObject: highScoreList)
+        UserDefaults.standard.set(highScoreData, forKey: "allScores")
+        UserDefaults.standard.synchronize()
     }
     
     override func willMove(toParentViewController parent: UIViewController?) {

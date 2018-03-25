@@ -36,14 +36,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         allHighScores = [memoryHighScore, sortingHighScore, balloonHighScore]
-        
 
             if let readAllHighScores = UserDefaults.standard.object(forKey: "allScores") as? Data {
                 allHighScores = NSKeyedUnarchiver.unarchiveObject(with: readAllHighScores) as! [[HighScore]]
+            } else {
+                setHS()
             }
-        outputData()
-        
-        LoadHighScoreView()
+
 
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -51,7 +50,10 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         if let readAllHighScores = UserDefaults.standard.object(forKey: "allScores") as? Data {
             allHighScores = NSKeyedUnarchiver.unarchiveObject(with: readAllHighScores) as! [[HighScore]]
+        } else {
+            setHS()
         }
+
     }
     
     func LoadHighScoreView() {
@@ -136,11 +138,13 @@ class ViewController: UIViewController {
     }
     
     func resetDefaults() {
-        let defaults = UserDefaults.standard
-        let dictionary = defaults.dictionaryRepresentation()
-        dictionary.keys.forEach { key in
-            defaults.removeObject(forKey: "allScores")
-        }
+//        let defaults = UserDefaults.standard
+//        let dictionary = defaults.dictionaryRepresentation()
+//        dictionary.keys.forEach { key in
+//            defaults.removeObject(forKey: "allScores")
+//        }
+        UserDefaults.standard.removeObject(forKey: "allScores")
+        UserDefaults.standard.synchronize()
     }
     
     func updateDatabase(){
