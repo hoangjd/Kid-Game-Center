@@ -33,6 +33,8 @@ class SortingViewController: UIViewController {
     var scoreTimer = Timer()
     var scoreSeconds = 0
     var finalScore = 0
+    var highScoreList: [[HighScore]]!
+    var sortHighScore: [HighScore]!
     
     let numberImageArray: [UIImage] = [
         UIImage(named: "cartoon-number-0")!,
@@ -71,6 +73,7 @@ class SortingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         finalScore = 0
+        sortHighScore = highScoreList[1]
         getOurVehicles = AllVehicles(difficulty: ourDifficulty.difficulty!)
         self.moveImg = [UIPanGestureRecognizer](repeatElement(UIPanGestureRecognizer(target: self, action: #selector(letsMove)), count: getOurVehicles.allArray.count))
         
@@ -271,6 +274,8 @@ class SortingViewController: UIViewController {
         }
         scoreTimer.invalidate()
         time.timer.invalidate()
+        checkHighScores()
+        
         presentWinAlert()
     }
     
@@ -279,6 +284,30 @@ class SortingViewController: UIViewController {
         alert.presentWinAlert()
     }
     
+    func checkHighScores() {
+        let potentialHS = HighScore(gameType: "Sort", score: finalScore)
+
+
+     //   sortHighScore.remove(at: i)
+
+        for i in 0..<sortHighScore.count {
+            if sortHighScore[i].score < finalScore {
+                sortHighScore.insert(potentialHS, at: i)
+                sortHighScore.remove(at: 5)
+                highScoreList[1] = sortHighScore
+         //       sortHighScore[i].score = finalScore
+                updateDatabase()
+                return
+            }
+        
+        }
+    }
+    
+    func updateDatabase(){
+        let highScoreData = NSKeyedArchiver.archivedData(withRootObject: highScoreList)
+        UserDefaults.standard.set(highScoreData, forKey: "allScores")
+        UserDefaults.standard.synchronize()
+    }
     func presentLossAlert() {
         let alert = AlertMessage(viewController: self, score: finalScore)
         alert.endTimeAlert()
@@ -342,6 +371,14 @@ class SortingViewController: UIViewController {
             return landArrayImage[vehicle.typeIdentifier!]
         }
     }
+    
+//    override func viewWillDisappear(_ animated: Bool) {
+////        if let readAllHighScores = UserDefaults.standard.object(forKey: "allScores") as? Data {
+////            allHighScores = NSKeyedUnarchiver.unarchiveObject(with: readAllHighScores) as! [[HighScore]]
+////        }
+//    }
+    
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

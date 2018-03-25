@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var memoryButton: UIButton!
     @IBOutlet weak var sortButton: UIButton!
     @IBOutlet weak var balloonButton: UIButton!
+    var highScoreView = UIView(frame: CGRect(x: 300, y: 100, width: 400, height: 600))
     
    // var allHighScores = [HighScore](repeatElement(HighScore(gameType:), count: <#T##Int#>)//HighScore(gameType: "Memory", score: 0)
     
@@ -41,33 +42,67 @@ class ViewController: UIViewController {
                 allHighScores = NSKeyedUnarchiver.unarchiveObject(with: readAllHighScores) as! [[HighScore]]
             }
         outputData()
+        
+        LoadHighScoreView()
 
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-//    func setHS() {
-////        var game = "Memory"
-////        var hs = 0
-////
-//        let newHS = HighScore(gameType: game, score: hs)
-//        for i in 0..<allHighScores.count {
-//            for j in 0..<allHighScores[i].count{
-//                if i == 0 {
-//                    allHighScores[i][j].game = "Memory"
-//                } else if i == 1 {
-//                    allHighScores[i][j].game = "Sort"
-//                } else if i == 2 {
-//                    allHighScores[i][j].game = "Balloon"
-//                }
-//            }
-//        }
-//
-//    //    if newHS.gameType
-//   //     allHighScores = (newHS)
-//        updateDatabase()
-//        outputData()
-//
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        if let readAllHighScores = UserDefaults.standard.object(forKey: "allScores") as? Data {
+            allHighScores = NSKeyedUnarchiver.unarchiveObject(with: readAllHighScores) as! [[HighScore]]
+        }
+    }
+    
+    func LoadHighScoreView() {
+        highScoreView = UIView(frame: CGRect(x: 300, y: 100, width: 400, height: 600))
+        highScoreView.backgroundColor = UIColor(displayP3Red: 255/255, green: 255/255, blue: 255/255, alpha: 0.95)
+        self.view.addSubview(highScoreView)
+        
+        let highScoreExit = UIButton(frame: CGRect(x: 20, y: 20, width: 60, height: 30))
+        highScoreExit.setTitle("Close", for: .normal)
+        highScoreExit.setTitleColor(UIColor.green, for: .normal)
+  //      highScoreExit.backgroundColor = UIColor.black
+        highScoreExit.addTarget(self, action: #selector(removeScores(sender:)), for: .touchUpInside)
+        highScoreView.addSubview(highScoreExit)
+        
+        highScoreView.addSubview(createLabel(word: "HighScores", yLocation: 30))
+        highScoreView.addSubview(createLabel(word: "Memory", yLocation: 60))
+        highScoreView.addSubview(createLabel(word: "Sort", yLocation: 230))
+        highScoreView.addSubview(createLabel(word: "Balloon", yLocation: 410))
+        
+
+        
+        displayScore(gameType: 0, Location: 85, view: highScoreView) //memory
+        displayScore(gameType: 1, Location: 255, view: highScoreView) //sort
+        displayScore(gameType: 2, Location: 435, view: highScoreView) //balloon
+        
+        
+    }
+    
+    @objc func removeScores(sender: UIButton) {
+        highScoreView.removeFromSuperview()
+    }
+    @IBAction func displayScores(_ sender: UIBarButtonItem) {
+        if !highScoreView.isDescendant(of: self.view){
+            LoadHighScoreView()
+        }
+    }
+    
+    func createLabel(word: String, yLocation: Int) -> UILabel {
+        let highScoreLabel = UILabel(frame: CGRect(x: 100, y: yLocation, width: 200, height: 30))
+        highScoreLabel.textAlignment = .center
+        highScoreLabel.text = word
+        return highScoreLabel
+  //      highScoreView.addSubview(highScoreLabel)
+    }
+    
+    func displayScore(gameType: Int, Location: Int, view: UIView) {
+        for i in 0..<5 {
+            let currentScore = String(describing: allHighScores[gameType][i].score)
+            view.addSubview(createLabel(word:currentScore, yLocation: Location + (i*25)))
+        }
+    }
     
     func setHS() {
         for i in 0..<allHighScores.count {
@@ -173,7 +208,8 @@ class ViewController: UIViewController {
 
     @IBAction func playButtonPushed(_ sender: UIButton) {
       //  var ourChoices[[String]]
-        setHS()
+    //    setHS()
+
 //        print("\(allHighScores.game) \(allHighScores.score)")
         if let game = choice.game, let difficulty = choice.difficulty{
             print("\(game) \(difficulty)")
@@ -206,16 +242,19 @@ class ViewController: UIViewController {
         if let destination = segue.destination as? MemoryViewController{
             destination.title = "Memory"
             destination.ourDifficulty = choice
+            destination.highScoreList = allHighScores
         }
         
         if let destination = segue.destination as? SortingViewController{
             destination.title = "Sort The Vehicles"
             destination.ourDifficulty = choice
+            destination.highScoreList = allHighScores
         }
         
         if let destination = segue.destination as? BalloonViewController{
             destination.title = "Balloon Pop"
             destination.ourDifficulty = choice
+            destination.highScoreList = allHighScores
         }
     }
     

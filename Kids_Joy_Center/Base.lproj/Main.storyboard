@@ -124,7 +124,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="VyA-hX-dFh">
-                        <barButtonItem key="rightBarButtonItem" title="High Scores" id="rdX-7t-x2T"/>
+                        <barButtonItem key="rightBarButtonItem" title="High Scores" id="rdX-7t-x2T">
+                            <connections>
+                                <action selector="displayScores:" destination="BYZ-38-t0r" id="JDM-78-8MW"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="balloonButton" destination="y15-ga-Fn4" id="3q2-AL-hps"/>

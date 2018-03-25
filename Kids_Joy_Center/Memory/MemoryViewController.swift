@@ -61,6 +61,7 @@ class MemoryViewController: UIViewController {
     var scoreTimer = Timer()
     var scoreSeconds = 0
     var finalScore = 0
+    var highScoreList: [[HighScore]]!
     
     let numberImageArray: [UIImage] = [
         UIImage(named: "cartoon-number-0")!,
