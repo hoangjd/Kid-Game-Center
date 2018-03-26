@@ -211,8 +211,9 @@ class BalloonViewController: UIViewController {
     
     @objc func balloonRand() {
         balloonTimerSeconds += 1
-        
         checkTimer()
+        
+        
         var randLocation = Int(arc4random_uniform(10))
         var randBalloon = Int(arc4random_uniform(10))
         
