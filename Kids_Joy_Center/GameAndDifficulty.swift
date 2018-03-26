@@ -12,6 +12,4 @@ import Foundation
 class GameAndDifficulty {
     var game: String?
     var difficulty: String?
-//    let gameArray: [String] = ["Matching","Sort","Balloon"]
-//    let difficultyArray: [String] = ["Easy","Medium","Hard"]
 }

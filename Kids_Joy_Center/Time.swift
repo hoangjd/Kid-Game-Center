@@ -41,11 +41,6 @@ class Time {
         self.second2Img = timeImageArray[sec2]
     }
     
-//    func startTime() {
-//        if gameType == "Memory" {
-//            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(MemoryViewController.updateTimeImages)), userInfo: nil, repeats: true)
-//        }
-//    }
     
     func formatedTime(time:TimeInterval) -> String {
         let minutes = Int(time)/60 % 60
@@ -54,17 +49,5 @@ class Time {
         
     }
     
-//    @objc func updateTime() -> Int{
-//        //     print (seconds)
-//        print(formatedTime(time: TimeInterval(self.seconds)))
-//        if self.seconds > 0{
-//            updateImages(time: TimeInterval(self.seconds))
-//            self.seconds = self.seconds - 1
-//            return self.seconds
-//        } else {
-//            updateImages(time: TimeInterval(self.seconds))
-//            //      self.timer.invalidate()
-//            return 0
-//        }
-//    }
+
 }

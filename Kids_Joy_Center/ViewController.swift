@@ -57,13 +57,13 @@ class ViewController: UIViewController {
     func LoadHighScoreView() {
         highScoreView = UIView(frame: CGRect(x: 300, y: 100, width: 400, height: 600))
         highScoreView.backgroundColor = UIColor(red: 255/255, green: 250/255, blue: 250/255, alpha: 0.92)
-    //    highScoreView.backgroundColor = UIColor(displayP3Red: 255/255, green: 255/255, blue: 255/255, alpha: 0.95)
+
         self.view.addSubview(highScoreView)
         
         let highScoreExit = UIButton(frame: CGRect(x: 20, y: 20, width: 60, height: 30))
         highScoreExit.setTitle("Close", for: .normal)
         highScoreExit.setTitleColor(UIColor.green, for: .normal)
-  //      highScoreExit.backgroundColor = UIColor.black
+
         highScoreExit.addTarget(self, action: #selector(removeScores(sender:)), for: .touchUpInside)
         highScoreView.addSubview(highScoreExit)
         
